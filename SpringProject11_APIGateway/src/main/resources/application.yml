@@ -1,0 +1,36 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: Apigateway-Service	
+#  config:
+#    import: optional:configserver:http://localhost:8085			  					
+  cloud:
+    gateway:
+      routes:
+      - id: Employee-Registry
+        uri: lb://Employee-Registry
+        predicates:
+        - Path=/employee/**
+      - id: Hotel-Service
+        uri: lb://Hotel-Service
+        predicates:
+        - Path=/hotels/**,/staffs/**
+      - id: Rating-Service
+        uri: lb://Rating-Service
+        predicates:
+        - Path=/ratings/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+okta:
+  oauth2:
+    issuer: https://dev-29575430.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oals2zwfcBSYz7hq5d7
+    client-secret: GrGGo5Zlku4S9Ul8IAeSJS4-iRWjnCWYQIQdYTAW9DfSyij2ehxMyhsPqUEZQ-gy
+    scopes: openid, profile, email, offline_access
